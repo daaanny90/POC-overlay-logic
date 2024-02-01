@@ -1,0 +1,21 @@
+// This file purpose end with this POC
+// It is not meant to be part of our styleguide and conventions
+
+@mixin atomic-highlight($name, $color) {
+
+  border-radius: 10px;
+  border: 1px solid $color;
+  padding: 1rem;
+  position: relative;
+
+  &:before {
+    content: $name;
+    position: absolute;
+    top: -25px;
+    left: 0;
+    color: $color;
+    font-size: 1rem;
+    font-weight: normal;
+  }
+
+}
