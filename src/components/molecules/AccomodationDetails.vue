@@ -3,18 +3,9 @@ import MyTitle from '@/components/atoms/MyTitle.vue';
 import AccomodationOverlay from '@/components/molecules/AccomodationOverlay.vue'
 import MyButton from '@/components/atoms/MyButton.vue';
 import MyParagraph from '@/components/atoms/MyParagraph.vue';
-import { useOverlayStore } from '@/stores/Overlay.store';
-import { getAccomodationData } from '@/services/accomodation.service';
+import { useOverlayStateStore } from '@/states/Overlay.state';
 
-const store = useOverlayStore();
-
-const toggleOverlay = () => {
-  if (!store.isDataInitialized('accomodation')) {
-    store.initializeOverlayData(getAccomodationData, 'accomodation');
-  }
-
-  store.toggleOverlay('accomodation')
-}
+const state = useOverlayStateStore();
 </script>
 
 <template>
@@ -22,8 +13,8 @@ const toggleOverlay = () => {
     <my-title>Accomodation Details</my-title>
     <my-paragraph>Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur
       cupidatat.</my-paragraph>
-    <MyButton @click="toggleOverlay">See Accomodation Details</MyButton>
-    <accomodation-overlay></accomodation-overlay>
+    <MyButton @click="state.toggleOverlay('accomodation')">See Accomodation Details</MyButton>
+    <accomodation-overlay v-if="state.visibleOverlay === 'accomodation'"></accomodation-overlay>
   </article>
 </template>
 

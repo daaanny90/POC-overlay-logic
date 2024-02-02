@@ -3,20 +3,23 @@ import MyOverlay from '@/components/atoms/MyOverlay.vue'
 import MyButton from '@/components/atoms/MyButton.vue'
 import MyList from '@/components/atoms/MyList.vue';
 import MySubtitle from '@/components/atoms/MySubtitle.vue';
-import { useOverlayStore } from '@/stores/Overlay.store';
-import { getTravelData } from '@/services/travel.service';
+import { useOverlayDataStore } from '@/stores/OverlayData.store';
+import { useOverlayStateStore } from '@/states/Overlay.state'
 import { onMounted } from 'vue';
 
-const store = useOverlayStore();
+const store = useOverlayDataStore();
+const state = useOverlayStateStore();
 
 onMounted(() => {
-  store.initializeOverlayData(getTravelData, 'travel')
+  if (!store.isDataInitialized('travel')) {
+    store.initializeTravelData();
+  }
 })
 </script>
 
 <template>
   <div>
-    <my-overlay v-if="store.visibleOverlay === 'travel'">
+    <my-overlay>
       <template #header>
         <my-subtitle>{{ store.travelData.title }}</my-subtitle>
       </template>
@@ -29,7 +32,7 @@ onMounted(() => {
       </template>
 
       <template #footer>
-        <my-button @click="store.clearOverlay()" centered>
+        <my-button @click="state.clearOverlay()" centered>
           Close and go back
         </my-button>
       </template>

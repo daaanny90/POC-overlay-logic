@@ -3,26 +3,17 @@ import MyTitle from '@/components/atoms/MyTitle.vue';
 import TravelOverlay from '@/components/molecules/TravelOverlay.vue';
 import MyButton from '@/components/atoms/MyButton.vue';
 import MyImage from '@/components/atoms/MyImage.vue';
-import { useOverlayStore } from '@/stores/Overlay.store';
-import { getTravelData } from '@/services/travel.service';
+import { useOverlayStateStore } from '@/states/Overlay.state';
 
-const store = useOverlayStore();
-
-const toggleOverlay = () => {
-  if (!store.isDataInitialized('travel')) {
-    store.initializeOverlayData(getTravelData, 'travel');
-  }
-
-  store.toggleOverlay('travel')
-}
+const state = useOverlayStateStore();
 </script>
 
 <template>
   <article>
     <my-title>Travel Details</my-title>
     <my-image src="https://picsum.photos/id/124/200" alt="travel" />
-    <MyButton @click="toggleOverlay">See Travel Details</MyButton>
-    <travel-overlay></travel-overlay>
+    <MyButton @click="state.toggleOverlay('travel')">See Travel Details</MyButton>
+    <travel-overlay v-if="state.visibleOverlay === 'travel'"></travel-overlay>
   </article>
 </template>
 

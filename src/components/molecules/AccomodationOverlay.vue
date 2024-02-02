@@ -4,15 +4,22 @@ import MyButton from '@/components/atoms/MyButton.vue'
 import MySubtitle from '@/components/atoms/MySubtitle.vue'
 import MyParagraph from '@/components/atoms/MyParagraph.vue'
 import MyList from '@/components/atoms/MyList.vue'
-import { useOverlayStore } from '@/stores/Overlay.store';
-import { getAccomodationData } from '@/services/accomodation.service';
+import { useOverlayDataStore } from '@/stores/OverlayData.store';
+import { useOverlayStateStore } from '@/states/Overlay.state'
+import { onMounted } from 'vue';
 
-const store = useOverlayStore();
-store.initializeOverlayData(getAccomodationData, 'accomodation')
+const store = useOverlayDataStore();
+const state = useOverlayStateStore();
+
+onMounted(() => {
+  if (!store.isDataInitialized('accomodation')) {
+    store.initializeAccomodationData();
+  }
+})
 </script>
 
 <template>
-  <my-overlay v-if="store.visibleOverlay === 'accomodation'">
+  <my-overlay>
     <template #header>
       <my-subtitle>{{ store.accomodationData.title }}</my-subtitle>
     </template>
@@ -27,7 +34,7 @@ store.initializeOverlayData(getAccomodationData, 'accomodation')
     </template>
 
     <template #footer>
-      <my-button @click="store.clearOverlay()" centered>
+      <my-button @click="state.clearOverlay()" centered>
         Close and go back
       </my-button>
     </template>
